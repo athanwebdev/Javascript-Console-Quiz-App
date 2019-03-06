@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JavaScript Console Quiz Game</title>
+
+  <style type="text/css">
+    body {
+      text-align: center;
+      padding-top: 30%;
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>Open you JS Console (Ctrl + Shift + J) to start the quiz.</h1>
+
+
+  <script type="text/javascript">
+    
+
+    // create function constructor for question
+    function Question(questions, answers, correct) {
+      this.questions = questions;
+      this.answers = answers;
+      this.correct = correct;
+    }
+
+    // create prototype function that display the question together with the choices in the console
+    Question.prototype.displayQuestion = function() {
+      console.log(this.questions);
+      for(let i = 0; i < this.answers.length; i++) {
+        console.log(i + ': ' + this.answers[i])
+      }
+    }
+
+    // check prototype function that check the user's answer
+    Question.prototype.checkAnswer = function(ans, callback){
+      let sc;
+      if(ans === this.correct){
+        console.log('Correct Answer!');
+        sc = callback(true);
+      } else {
+        console.log('Wrong answer! Please try again.')
+        sc = callback(false);
+      }
+      this.displayScore(sc);
+    }
+
+
+    // create a prototype function that display current score
+    Question.prototype.displayScore = function(score){
+      console.log('Your current score is: ' + score);
+      console.log('----------------------------------');
+    }
+
+    // create questions
+    let q1 = new Question('Is JavaScript a coolest programming language in the world?', ['Yes', 'No'], 0);
+    let q2 = new Question('Who build this app?', ['Joan', 'Jonathan', 'Mark', 'John'], 1);
+    let q3 = new Question('How did you find coding?', ['Boring', 'Hard', 'Fun', 'Tedious'], 2);
+
+    // store all questions in the array
+    let questions = [q1, q2, q3];
+
+    // create function that count the correct score
+    function score(){
+      let sc = 0;
+      return function(correct){
+        if(correct){
+          sc++;
+        }
+        return sc;
+      }
+    }
+
+    let keepScore = score();
+
+
+    // display questions
+    function nextQuestion() {
+
+      // create random number 
+      let n = Math.floor(Math.random() * questions.length);
+
+      // display random question
+      questions[n].displayQuestion();
+
+      // use prompt to ask the user the answer
+      let answer = prompt('Please select the correct answer. Type "EXIT" to close the program');
+
+      // display question again until the user does not exit
+      if(answer !== 'Exit' && answer !== 'exit' && answer !== 'EXIT' ) {
+
+        // display current score
+        questions0[n].checkAnswer(parseInt(answer), keepScore);
+        nextQuestion();
+      }
+
+
+    }
+
+    nextQuestion();
+
+
+  </script>
+</body>
+</html>
